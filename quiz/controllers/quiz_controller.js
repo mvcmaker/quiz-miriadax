@@ -7,3 +7,6 @@ exports.answer = function(req, res) {
 	else
 		res.render('quizes/answer', { title: 'Quiz', respuesta: 'Incorrecto' });
 };
+exports.author = function(req, res) {
+	res.render('author');
+};
