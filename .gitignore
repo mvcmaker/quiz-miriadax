@@ -1,3 +1,6 @@
+#.gitignore
 node_modules/
 desktop.ini
 npm-debug.log
+.env
+quiz.sqlite
