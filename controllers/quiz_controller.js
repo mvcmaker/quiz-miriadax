@@ -1,23 +1,44 @@
 var models = require("../models/models");
 
-// GET /quizes/question
-exports.question = function(req, res) {
-	models.Quiz.findAll().then(function(quiz){
-		res.render('quizes/question', { title: 'Quiz', pregunta: quiz[0].question });
-	});
+// Autoload - factorizes the code if path includes :quizId
+exports.load = function(req, res, next, quizId) {
+	models.Quiz.findById(quizId).then(function(quiz) {
+		if(quiz) {
+			req.quiz = quiz;
+			next();
+		}
+		else {
+			next(new Error("quizId = " + quizId + " not found"));
+		}
+	}).catch(function(error) { next(error); });
+}
+
+// GET /quizes
+exports.index = function(req, res) {
+	models.Quiz.findAll().then(function(quizes) {
+		res.render('quizes/index.ejs', {quizes:quizes});
+	}).catch(function(error) { next(error); });
+} 
+
+// GET /quizes/:quizId
+exports.show = function(req, res) {
+	//console.log(req.params.quizId);
+	//models.Quiz.findById(req.params.quizId).then(function(quiz){
+		res.render('quizes/show', { quiz: req.quiz });
+	//});
 	
 };
 
-// GET /quizes/answer
+// GET /quizes/:quizId/answer
 exports.answer = function(req, res) {
-	models.Quiz.findAll().then(function(quiz){
-		var responses = quiz[0].answer.split(',');
-
-		if(responses.indexOf(req.query.respuesta.toLowerCase()) != -1)
-			res.render('quizes/answer', { title: 'Quiz', respuesta: 'Correcto' });
-		else
-			res.render('quizes/answer', { title: 'Quiz', respuesta: 'Incorrecto' });
-	});
+	//models.Quiz.findById(req.params.quizId).then(function(quiz){
+		var responses = req.quiz.answer.split(',');
+		var i;
+		var result = 'Incorrecto';
+		if(i=responses.indexOf(req.query.respuesta.toLowerCase()) != -1)
+			result = 'Correcto';
+		res.render('quizes/answer', { quiz: req.quiz, respuesta: result });
+	//});
 };
 
 // GET /quizes/author
