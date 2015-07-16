@@ -18,7 +18,7 @@ exports.index = function(req, res, next) {
 	var options;
 	if(req.query.search !== undefined) {
 		console.log("Detected search query!: " + req.query.search);
-		var search = '%' + req.query.search.trim().toLowerCase().replace(/\d/g, '%') + '%';
+		var search = '%' + req.query.search.trim().replace(/\d/g, '%') + '%';
 		options = { 'where': ["question LIKE ?", search], order:"question" };
 	}
 	models.Quiz.findAll(options).then(function(quizes) {
