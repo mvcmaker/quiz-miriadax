@@ -38,7 +38,7 @@ exports.Quiz = Quiz; // exports definition of Quiz table
 // sequelize.sync() creates and initializes the question tables in DB
 sequelize.sync().then(function() {
 	// success(...) executes the handler after the table has been created
-	Quiz.truncate().then(function() { console.log("Database has been successfully deleted") });
+	//Quiz.truncate().then(function() { console.log("Database has been successfully deleted") });
 	Quiz.count().then(function(count) {
 		if(count === 0) { // The table only is initizlied if is empty
 			Quiz.create({
