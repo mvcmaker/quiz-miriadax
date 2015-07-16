@@ -18,14 +18,14 @@ var Sequelize = require('sequelize');
 
 // Use DB Sqlite or Postgres
 var sequelize = new Sequelize(DB_name, user, pwd,
-		{   dialect:dialect,
-			protocol:protocol,
-			port:port,
-			host:host,
-			storage:storage, // Only for SQLite
-			omitNull:true	// Only for Postgres
-		}
-	);
+	{   dialect:dialect,
+		protocol:protocol,
+		port:port,
+		host:host,
+		storage:storage, // Only for SQLite
+		omitNull:true	// Only for Postgres
+	}
+);
 
 // Import the definition of Quiz table in quiz.js
 var quiz_path = path.join(__dirname, 'quiz');
@@ -33,9 +33,12 @@ var Quiz = sequelize.import(quiz_path);
 
 exports.Quiz = Quiz; // exports definition of Quiz table
 
+
+
 // sequelize.sync() creates and initializes the question tables in DB
 sequelize.sync().then(function() {
 	// success(...) executes the handler after the table has been created
+	Quiz.truncate().then(function() { console.log("Database has been successfully deleted") });
 	Quiz.count().then(function(count) {
 		if(count === 0) { // The table only is initizlied if is empty
 			Quiz.create({
@@ -49,3 +52,4 @@ sequelize.sync().then(function() {
 		}
 	});
 });
+
