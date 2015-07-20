@@ -101,6 +101,15 @@ exports.update = function(req, res) {
 	});
 }
 
+// DELETE /quizes/:id
+exports.destroy = function(req, res, next) {
+	var quiz = req.query.quizId;
+	req.quiz.destroy().then(function(err) {
+		res.redirect('/quizes');
+	}).catch(function(error) { next(error); });
+	
+}
+
 // GET /quizes/author
 exports.author = function(req, res) {
 	res.render('author');
