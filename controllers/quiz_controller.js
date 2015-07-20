@@ -18,11 +18,11 @@ exports.index = function(req, res, next) {
 	var options;
 	if(req.query.search !== undefined) {
 		console.log("Detected search query!: " + req.query.search);
-		var search = '%' + req.query.search.trim().replace(/\d/g, '%') + '%';
+		var search = '%' + req.query.search.trim().replace(/\s/g, '%') + '%';
 		options = { 'where': ["question LIKE ?", search], order:"question" };
 	}
 	models.Quiz.findAll(options).then(function(quizes) {
-		res.render('quizes/index.ejs', { quizes:quizes });
+		res.render('quizes/index.ejs', { quizes:quizes, errors: [] });
 	}).catch(function(error) { next(error); });
 	
 } 
@@ -31,7 +31,7 @@ exports.index = function(req, res, next) {
 exports.show = function(req, res) {
 	//console.log(req.params.quizId);
 	//models.Quiz.findById(req.params.quizId).then(function(quiz){
-		res.render('quizes/show', { quiz: req.quiz });
+		res.render('quizes/show', { quiz: req.quiz, errors: [] });
 	//});
 	
 };
@@ -44,9 +44,62 @@ exports.answer = function(req, res) {
 		var result = 'Incorrecto';
 		if(i=responses.indexOf(req.query.respuesta.toLowerCase()) != -1)
 			result = 'Correcto';
-		res.render('quizes/answer', { quiz: req.quiz, respuesta: result });
+		res.render('quizes/answer', { quiz: req.quiz, respuesta: result, errors: [] });
 	//});
 };
+
+// GET /quizes/new
+exports.new = function(req, res) {
+	var quiz = models.Quiz.build( { // Creates quiz object
+		question : "Pregunta",
+		answer : "Respuesta"
+	});
+	res.render('quizes/new', { quiz:quiz, errors: [] });
+}
+
+// POST /quizes/create
+exports.create = function(req, res) {
+	var quiz = models.Quiz.build( req.body.quiz );
+
+	
+	quiz.validate().then(function(err) {
+		if(err) {
+			res.render('quizes/new', { quiz:quiz, errors:err.errors });
+		}
+		else {
+			// save: Stores in DB the quiz questions and answers fields
+			quiz.save({ fields:['question', 'answer']}).then(function() {
+				res.redirect('/quizes');
+			}); // HTTP redirection (relative), question list
+		}
+	});
+
+	
+}
+
+// GET /quizes/:id/edit
+exports.edit = function(req, res) {
+	var quiz = req.quiz; // autoload of quiz instance
+	res.render('quizes/edit', { quiz:quiz, errors: [] });
+}
+
+// PUT /quizes/:id
+exports.update = function(req, res) {
+	req.quiz.question = req.body.quiz.question;
+	req.quiz.answer = req.body.quiz.answer;
+
+	req.quiz.validate().then(function(err) {
+		if(err) {
+			res.render('quizes/edit', { quizes: req.quiz, errors:err.errors })
+		}
+		else {
+			// save: Stores in DB the quiz questions and answers fields
+			req.quiz.save( { fields: ['question', 'answer' ]} ).then(function() {
+				res.redirect('/quizes');
+			}); // HTTP redirection (relative), question list
+		}
+	});
+}
 
 // GET /quizes/author
 exports.author = function(req, res) {
