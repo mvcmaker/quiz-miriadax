@@ -2,5 +2,15 @@
 <input type="text" id="quest" name="quiz[question]" value="<%= quiz.question %>"></p>
 <p><label for="answ" class="rem">Respuesta:</label>
 <input type="text" id="answ" name="quiz[answer]" value="<%= quiz.answer %>"></p>
+<p><label for="selCategory" class="rem">Categoría:</label>
+	<select id="selCategory" name="quiz[category]">
+	<option value="" selected="selected">[Categoría]</option>
+	<option value="otro">Otro</option>
+  	<option value="humanidades">Humanidades</option>
+  	<option value="ocio">Ocio</option>
+  	<option value="ciencia">Ciencia</option>
+  	<option value="tecnologia">Tecnología</option>
+	</select>
+</p>
 <a href="/quizes"><button type="button">Cancelar</button></a>
 <input type="submit" value="Salvar">

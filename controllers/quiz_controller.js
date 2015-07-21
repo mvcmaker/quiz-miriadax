@@ -18,7 +18,7 @@ exports.index = function(req, res, next) {
 	var options;
 	if(req.query.search !== undefined) {
 		console.log("Detected search query!: " + req.query.search);
-		var search = '%' + req.query.search.trim().replace(/\s/g, '%') + '%';
+		var search = '%' + req.query.search.trim().replace(/\s+/g, '%') + '%';
 		options = { 'where': ["question LIKE ?", search], order:"question" };
 	}
 	models.Quiz.findAll(options).then(function(quizes) {
@@ -52,23 +52,23 @@ exports.answer = function(req, res) {
 exports.new = function(req, res) {
 	var quiz = models.Quiz.build( { // Creates quiz object
 		question : "Pregunta",
-		answer : "Respuesta"
+		answer : "Respuesta",
+		category : "Categoría"
 	});
 	res.render('quizes/new', { quiz:quiz, errors: [] });
 }
 
 // POST /quizes/create
-exports.create = function(req, res) {
+exports.create = function(req, res, next) {
 	var quiz = models.Quiz.build( req.body.quiz );
 
-	
 	quiz.validate().then(function(err) {
 		if(err) {
 			res.render('quizes/new', { quiz:quiz, errors:err.errors });
 		}
 		else {
 			// save: Stores in DB the quiz questions and answers fields
-			quiz.save({ fields:['question', 'answer']}).then(function() {
+			quiz.save({ fields:['question', 'answer', 'category']}).then(function() {
 				res.redirect('/quizes');
 			}); // HTTP redirection (relative), question list
 		}
