@@ -27,11 +27,19 @@ var sequelize = new Sequelize(DB_name, user, pwd,
 	}
 );
 
-// Import the definition of Quiz table in quiz.js
+// Imports the definition of Quiz table in quiz.js
 var quiz_path = path.join(__dirname, 'quiz');
 var Quiz = sequelize.import(quiz_path);
 
+// Imports definition of Comment table in comment.js
+var comment_path = path.join(__dirname, 'comment');
+var Comment = sequelize.import(comment_path);
+
+Comment.belongsTo(Quiz);
+Quiz.hasMany(Comment);
+
 exports.Quiz = Quiz; // exports definition of Quiz table
+exports.Comment = Comment;
 
 
 
