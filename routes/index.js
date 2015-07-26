@@ -3,14 +3,20 @@ var router = express.Router();
 
 var quizController = require('../controllers/quiz_controller');
 var commentController = require('../controllers/comment_controller');
+var sessionController = require('../controllers/session_controller');
 
 /* GET home page. */
 router.get('/', function(req, res) {
   res.render('index', { title: 'Quiz', errors: [] });
 });
 
-// Commands autoload with :quizId
-router.param('quizId', quizController.load);
+// Autoload commands with :quizId
+router.param('quizId', quizController.load); // autoload :quizId
+
+// Session routes definition
+router.get('/login', sessionController.new); // login form
+router.post('/login', sessionController.create); // session creation
+router.get('/logout', sessionController.destroy); // session destroy
 
 // /quizes routes definitions
 router.get('/quizes/', quizController.index);
