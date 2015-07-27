@@ -13,7 +13,7 @@
   <div id="page-wrap">
   	<header class="main" id="h1">
       <span class="right">
-      <% if(!session.user) { %>
+      <% if(session.user === undefined) { %>
         <a href="/login">Login</a>
       <% }else{ %>
         Autenticado como <%= session.user.friendlyName %> <a href="/logout">Logout</a> (Iniciada sesión en <%= session.user.dt %>)

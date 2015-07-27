@@ -1,3 +1,9 @@
+exports.loginRequired = function(req, res, next) {
+	if(req.session.user !== undefined)
+		next();
+	else
+		res.redirect('/login');
+}
 // GET /login -- login form
 exports.new = function(req, res) {
 	var errors = req.session.errors || {};
