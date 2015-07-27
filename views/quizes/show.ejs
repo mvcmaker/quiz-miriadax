@@ -6,5 +6,16 @@
     <p><a href="/quizes/<%= quiz.id %>/comments/new"><button type="button">Nuevo comentario</button></a></p>
     <h3>Comentarios</h3>
     <% for(index in quiz.Comments) { %>
-    	<p>- <%= quiz.Comments[index].text %></p>
+    <% console.log("Published? " + quiz.Comments[index].published); 
+console.log("Session? " + session.user);
+    %>
+
+    	<% if(quiz.Comments[index].published || session.user) { %>
+    		<p>- <%= quiz.Comments[index].text %></p>
+    			<% if(session.user && !quiz.Comments[index].published) { %>
+    				<a href="/quizes/<%= quiz.id %>/comments/<%= quiz.Comments[index].id %>/publish">
+    					<button type="button">Publicar</button>
+    				</a>
+    			<% } %>
+    	<% } %>
     <% } %>
