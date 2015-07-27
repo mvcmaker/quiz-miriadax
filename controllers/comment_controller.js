@@ -50,6 +50,6 @@ exports.publish = function(req, res) {
 	req.comment.published = true;
 	console.log("publish call");
 	req.comment.save({ fields: ['published']})
-		.then(function() { console.log("SAVING comment published");res.redirect('/quizes/' + req.params.quizId); })
+		.then(function() { console.log("SAVED comment published");res.redirect('/quizes/' + req.params.quizId); })
 		.catch(function(err){ next(err); });
 }

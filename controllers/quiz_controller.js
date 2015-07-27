@@ -114,7 +114,7 @@ exports.destroy = function(req, res, next) {
 	
 }
 
-// GET /quizes/author
+// GET /author
 exports.author = function(req, res) {
 	res.render('author', { errors: [] });
 };

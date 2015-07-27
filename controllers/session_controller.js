@@ -40,5 +40,7 @@ exports.create = function(req, res) {
 // DELETE /logout  -- session destroy
 exports.destroy = function(req, res) {
 	delete req.session.user;
+	if(req.session.expiration !== undefined)
+		delete req.session.expiration;
 	res.redirect(req.session.redir.toString());
 }
