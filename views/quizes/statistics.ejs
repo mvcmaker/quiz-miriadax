@@ -1,5 +1,8 @@
 <ul>
-<% for(var i in statistics) { %>
-	<li><%= i %>: <%= statistics[i] %></li>
-<% } %>
+	<li>Número de preguntas: <%= statistics.num_questions %></li>
+	<li>Número de comentarios: <%= statistics.num_comments %></li>
+	<li>Número de comentarios no publicados: <%= statistics.num_questions_no_comments %></li>
+	<li>Media de comentarios por pregunta: <%= statistics.avg_comments %></li>
+	<li>Número de preguntas con comentarios: <%= statistics.num_questions_comments %></li>
+	<li>Número de preguntas sin comentarios: <%= statistics.num_questions-statistics.num_questions_comments %></li>
 </ul>
