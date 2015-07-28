@@ -29,6 +29,7 @@ router.get('/quizes/:quizId(\\d+)/edit', sessionController.loginRequired, quizCo
 router.put('/quizes/:quizId(\\d+)', sessionController.loginRequired, quizController.update);
 router.delete('/quizes/:quizId(\\d+)', sessionController.loginRequired, quizController.destroy);
 router.get('/author', quizController.author);
+router.get('/quizes/statistics', sessionController.loginRequired, quizController.statistics);
 
 // comment routes definitions
 router.get('/quizes/:quizId(\\d+)/comments/new', commentController.new);
