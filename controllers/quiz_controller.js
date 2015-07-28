@@ -138,7 +138,7 @@ exports.statistics = function(req, res, next) {
 			models.Quiz.count({
 				include : [{ model: models.Comment, required:true }]
 			}).then(function(n) {
-				statistics.num_questions_coments = n;
+				statistics.num_questions_comments = n;
 				models.Quiz.count({
 					include : [{ model: models.Comment, required:false }]
 				}).then(function(n) {
